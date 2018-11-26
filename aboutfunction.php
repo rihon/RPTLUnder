@@ -20,7 +20,7 @@
 	function updateBio($id, $idea){
 		//echo $id;
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-		$stmt = $mysqli->prepare("UPDATE TLUnder_user_profile SET bio=$idea WHERE userid=$id");
+		$stmt = $mysqli->prepare("UPDATE TLUnder_user_profile SET bio='$idea' WHERE userid=$id");
 		echo $mysqli->error;
 		 //AND deleted IS NULL
 		$stmt->execute();

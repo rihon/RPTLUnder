@@ -18,7 +18,7 @@
 
 	<?php require ("header.php")?>
 	
-	<p><a href="usersinfo.php">Kasutajate info</a></p><!--Viib kasutajate lehele et leida kaaslast-->
+	<?php allUsers(); ?>
 	<p><a href="profiiliredigeerimine.php">Kasutajakonto redigeerimine</a></p><!--Kasutajakonto redigeerimine, muuta saab tutvustust ja pilte-->
 
 <?php require("footer.php") ?>

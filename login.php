@@ -19,6 +19,9 @@
 	$signupBirthMonth = null;
 	$signupBirthYear = null;
 	$signupBirthDate = "";
+	$signupSchool = "";
+	$signupInstitute = "";
+	
 	
 	$loginEmail = "";
 	$notice = "";
@@ -28,6 +31,11 @@
 	$signupGenderError = "";
 	$signupEmailError = "";
 	$signupPasswordError = "";
+	$signupSchoolError = "";
+	$signupInstituteError = "";
+
+	$Institute=$_REQUEST ["Institute"];
+	$School=$_REQUEST ["School"];
 	
 	$loginEmailError ="";
 	
@@ -138,6 +146,18 @@
 			$signupGenderError = " (Palun vali sobiv!) Määramata!";
 	}
 	
+	if (isset($_POST["School"]) && !empty($_POST["School"])){ //kui on määratud ja pole tühi
+			$signupSchool = intval($_POST["School"]);
+		} else {
+			$signupSchoolError = " (Palun vali sobiv!) Määramata!";
+	}
+	
+	if (isset($_POST["Institute"]) && !empty($_POST["Institute"])){ //kui on määratud ja pole tühi
+			$signupInstitute = intval($_POST["Institute"]);
+		} else {
+			$signupInstituteError = " (Palun vali sobiv!) Määramata!";
+	}
+	
 	//UUE KASUTAJA ANDMEBAASI KIRJUTAMINE, kui kõik on olemas	
 	if (empty($signupFirstNameError) and empty($signupFamilyNameError) and empty($signupBirthDayError) and empty($signupGenderError) and empty($signupEmailError) and empty($signupPasswordError)){
 		echo "Hakkan salvestama!";
@@ -145,7 +165,7 @@
 		$signupPassword = hash("sha512", $_POST["signupPassword"]);
 		//echo "\n Parooli " .$_POST["signupPassword"] ." räsi on: " .$signupPassword;
 		//kutsume välja kasutaja salvestamise funktsiooni
-		signUp($signupFirstName, $signupFamilyName, $signupBirthDate, $gender, $signupEmail, $signupPassword);
+		signUp($signupFirstName, $signupFamilyName, $signupBirthDate, $gender, $signupEmail, $signupPassword, $signupSchool, $signupInstitute, $Institute, $School);
 	}
 	
 	}//if kui oli vajutatud nuppu "Loo kasutaja"
@@ -199,7 +219,7 @@
 	<p>Siin harjutame sisselogimise funktsionaalsust.</p>
 	
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-		<label>Kasutajanimi (E-post): </label> </br>
+		<label>Kasutajanimi (E-post): </label> <br>
 		<input name="loginEmail" type="email" value="<?php echo $loginEmail; ?>">
 		<br><br>
 		<input name="loginPassword" placeholder="Salasõna" type="password">
@@ -211,28 +231,48 @@
 	<p>Kui pole veel kasutajat....</p>
 	
 	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-		<label>Eesnimi </label> </br>
+		<label>Eesnimi </label> <br>
 		<input name="signupFirstName" type="text" value="<?php echo $signupFirstName; ?>">
 		<span><?php echo $signupFirstNameError; ?></span>
 		<br>
-		<label>Perekonnanimi </label></br>
+		<label>Perekonnanimi </label><br>
 		<input name="signupFamilyName" type="text" value="<?php echo $signupFamilyName; ?>">
 		<span><?php echo $signupFamilyNameError; ?></span>
 		<br>
-		<label>Sisesta oma sünnikuupäev</label></br>
+		<label>Sisesta oma sünnikuupäev</label><br>
 		<?php
 			echo $signupDaySelectHTML .$signupMonthSelectHTML .$signupYearSelectHTML;
 		?>
 		<span><?php echo $signupBirthDayError; ?></span>
 		
-		<br><br>
+		<p>
+			<label>Vali kool</label><br>
+			<select name="School">
+				<option value="3">Valik</option> <?php if ($signupSchool == "3") {echo 'checked';} ?>
+				<option value="TLU">Tallinna Ülikool</option> <?php if ($signupSchool == "TLU") {echo 'checked';} ?>
+				<option value="TTU">Tallinna Tehnikaülikool</option> <?php if ($signupSchool == "TTU") {echo 'checked';} ?>
+				<option value="TTK">Tallinna Tehnikakõrgkool</option> <?php if ($signupSchool == "TTK") {echo 'checked';} ?>
+			</select>
+			
+		<br>
+		<label>Vali instituut</label><br>
+			<select name="Institute">
+				<option value="valik">Valik</option> <?php if ($signupInstitute == "Valik") {echo 'checked';} ?>
+				<option value="dti">DTI</option>	<?php if ($signupInstitute == "DTI") {echo 'checked';} ?>
+				<option value="hti">HTI</option>	<?php if ($signupInstitute == "HTI") {echo 'checked';} ?>
+				<option value="bfm">BFM</option>	<?php if ($signupInstitute == "BFM") {echo 'checked';} ?>
+				<option value="lti">LTI</option>	<?php if ($signupInstitute == "LTI") {echo 'checked';} ?>
+				<option value="yti">YTI</option>	<?php if ($signupInstitute == "YTI") {echo 'checked';} ?>
+			</select>
+			
+		<br>
 		<label>Sugu</label>
 		<br>
 		<input type="radio" name="gender" value="1" <?php if ($gender == "1") {echo 'checked';} ?>><label>Mees</label> <!-- Kõik läbi POST'i on string!!! -->
 		<input type="radio" name="gender" value="2" <?php if ($gender == "2") {echo 'checked';} ?>><label>Naine</label>
 		<br><br>
 		
-		<label>Kasutajanimi (E-post)</label></br>
+		<label>Kasutajanimi (E-post)</label><br>
 		<input name="signupEmail" type="email" value="<?php echo $signupEmail; ?>">
 		<span><?php echo $signupEmailError; ?></span>
 		<br><br>
@@ -244,4 +284,4 @@
 		<input name ="signUpButton" type="submit" value="Loo kasutaja">
 	</form>
 		
-<?phprequire("footer.php")?>
+<?php require("footer.php")?>
