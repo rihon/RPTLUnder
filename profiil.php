@@ -9,7 +9,7 @@ require("aboutfunction.php");
 
 function getSingleAboutDataProfile(){
 	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-	$stmt = $mysqli->prepare("SELECT text FROM TLUnder_user_profile WHERE id=?");
+	$stmt = $mysqli->prepare("SELECT bio FROM TLUnder_user_profile WHERE id=?");
 	echo $mysqli->error;
 	$stmt->bind_param("i", $GLOBALS["userId"]);
 	$stmt->bind_result($aboutText);
