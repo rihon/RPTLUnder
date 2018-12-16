@@ -92,7 +92,7 @@
 	$stmt->bind_result($FirstName, $FamilyName, $id);
 	$stmt->execute();
 	while ($stmt->fetch()){
-		echo "<a href=profiil.php?userId=" .$id .">" .$FirstName ." " .$FamilyName ."</a></br>";
+		echo "<a class='grid-item kast'".$id ." id=kast".$id ." href=profiil.php?userId=" .$id .">" .$FirstName ." " .$FamilyName ."</a></br>";
 		
 	}
 	$notice= $mysqli->error;

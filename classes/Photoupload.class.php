@@ -1,16 +1,15 @@
 <?php
-	class Photoupload{
+	class Photoupload {
 		/*public $publicTest;
-		private $privateTest;*/
+		public $privateTest;*/
 		private $tempName;
-		private $fileType;
+		private $imageFileType;
 		private $textToImage;
+		public $exifToImage;
 		private $myTempImage;
 		private $myImage;
 		private $marginRight;
 		private $marginBottom;
-		public $target_file;
-		public  $exifToImage;
 		
 		
 		function __construct($fileToUpload, $fileType){
@@ -18,9 +17,8 @@
 			$this->imageFileType = $fileType;
 			$this->marginRight = 10;
 			$this->marginBottom= 10;
-			/*$this->publicTest = "Täitsa avalik";
-			$this->privateTest= $x;*/
-		}//function__construct lõppeb
+		}
+
 		public function readExif(){
 			//loeme EXIF infot, millal pilt tehti
 			@$exif = exif_read_data($this->tempName, "ANY_TAG", 0, true);
@@ -31,6 +29,7 @@
 				$this->textToImage = "Pildistamise aeg teadmata!";
 			}
 		}//function readExif lõppeb
+
 		private function createImage(){
 			if($this->imageFileType == "jpg" or $this->imageFileType == "jpeg"){
 				$this->myTempImage = imagecreatefromjpeg($this->tempName);
@@ -65,24 +64,7 @@
 			imagefill($dst, 0, 0, $transcolor);
 			imagecopyresampled($dst, $image,0, 0, 0, 0, $w, $h, $origW, $origH);
 			return $dst; 
-		}//function resize image lõppeb
-			/*vesimärgi lisamine
-		public function addWatermark(){
-			$stamp = imagecreatefrompng("../graphics/hmv_logo.png");
-			$stampWidth = imagesx($stamp);
-			$stampHeight = imagesy($stamp);
-			$stampPosX = imagesx($this->myImage) - $stampWidth - $this->marginRight;
-			$stampPosY = imagesy($this->myImage) - $stampHeight - $this->marginBottom;
-			imageCopy($this->myImage, $stamp, $stampPosX, $stampPosY, 0, 0, $stampWidth, $stampHeight);
-		}//function addWatermark lõppeb
-		
-		public function addTextWatermark($text){
-		//lisame ka teksti vesimärgina
-			$textColor = imagecolorallocatealpha($this->myImage, 150, 150, 150, 50);
-			//RGBA alpha 0 -127
-			imagettftext($this->myImage, 20, 0, 10, 25, $textColor, "../graphics/ARIAL.TTF", $text);
-		}//function addTextWatermark lõppeb*/
-		
+		}
 		
 		public function savePhoto($directory, $fileName){
 			$target_file= $directory .$fileName;
@@ -116,7 +98,9 @@
 		}//function clearImages lõppeb		
 		
 		
-		public function photoToDatabase($target_file){
+		
+	}//class lõppeb
+	function photoToDatabase($target_file){
 		
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 		$stmt = $mysqli->prepare("INSERT INTO TLUnder_photo (id, userid, filename) VALUES (?, ?, ?);");
@@ -131,9 +115,7 @@
 		$stmt->close();
 		$mysqli->close();
 		return $notice;
-		}	
-	}//class lõppeb
-	
+		}
 
 	
 	

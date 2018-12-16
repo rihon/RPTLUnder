@@ -1,4 +1,7 @@
- <?php
+<style>
+<?php include 'style.css';?>
+</style>
+<?php
 	require("functions.php");
 	
 	//kui pole sisseloginud, siis sisselogimise lehele
@@ -15,10 +18,10 @@
 		exit();
 	}
 	?>
-
+	<div class='xd'>
 	<?php require ("header.php")?>
 	
-	<?php allUsers(); ?>
-	<p><a href="profiiliredigeerimine.php">Kasutajakonto redigeerimine</a></p><!--Kasutajakonto redigeerimine, muuta saab tutvustust ja pilte-->
-
+	<?php echo "<div class='main-grid'>"; allUsers(); echo "</div";  ?>
+	<p><a id="editprofile" href="profiiliredigeerimine.php">Kasutajakonto redigeerimine</a></p><!--Kasutajakonto redigeerimine, muuta saab tutvustust ja pilte-->
+	</div>
 <?php require("footer.php") ?>

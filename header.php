@@ -15,5 +15,5 @@
 <img src="https://i.imgur.com/sjoCdMn.png?1" alt="TLUnderi logo">
 </body>
 <h3><?php echo $_SESSION["firstname"] ." " .$_SESSION["lastname"]; ?></h3>
-<p><a href="main.php">Avalehele</a>!</p>
-<p><a href="?logout=1">Logi välja</a>!</p>
+<p><a id="avaleht" href="main.php">Avalehele</a>!</p>
+<p><a id="logout" href="?logout=1">Logi välja</a>!</p>
